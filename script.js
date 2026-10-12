@@ -184,15 +184,36 @@ Promise.all(slides.map((slide) => slide.decode().catch(() => {}))).then(() => {
 // with reduced motion, the HTML stays visible and usable from the first paint.
 if ("IntersectionObserver" in window && !motionPreference.matches) {
   const revealTargets = new Set();
+  const pendingPhotoReveals = new WeakSet();
   const reveal = (element, immediately = false) => {
     if (element.classList.contains("is-revealed") && !immediately) return;
     element.classList.add("is-revealed");
     if (immediately) element.classList.add("motion-complete");
     revealObserver.unobserve(element);
   };
+  const revealPhotoWhenReady = (element) => {
+    const image = element.querySelector("img");
+    if (!image || (image.complete && image.naturalWidth > 0)) {
+      reveal(element);
+      return;
+    }
+    if (pendingPhotoReveals.has(element)) return;
+    pendingPhotoReveals.add(element);
+    const finish = () => {
+      pendingPhotoReveals.delete(element);
+      reveal(element);
+    };
+    if (image.decode) image.decode().then(finish, finish);
+    else {
+      image.addEventListener("load", finish, { once: true });
+      image.addEventListener("error", finish, { once: true });
+    }
+  };
   const revealObserver = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
-      if (entry.isIntersecting) reveal(entry.target);
+      if (!entry.isIntersecting) return;
+      if (entry.target.classList.contains("motion-reveal-photo")) revealPhotoWhenReady(entry.target);
+      else reveal(entry.target);
     });
   }, { threshold: .08, rootMargin: "0px 0px -6% 0px" });
 
