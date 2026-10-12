@@ -1,5 +1,7 @@
 # グリーンヒルホテルグループ — トップページのデザイン案
 
+公開URL: https://yuyu1018.github.io/greenhill-redesign/
+
 `index.html` をブラウザで開くと確認できます。ビルドやインストールは不要です。VS Code の Live Server でも表示できます。
 
 ## デザイン
