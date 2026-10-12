@@ -199,15 +199,24 @@ if ("IntersectionObserver" in window && !motionPreference.matches) {
     }
     if (pendingPhotoReveals.has(element)) return;
     pendingPhotoReveals.add(element);
+    let finished = false;
     const finish = () => {
+      if (finished) return;
+      finished = true;
+      image.removeEventListener("load", finish);
+      image.removeEventListener("error", finish);
       pendingPhotoReveals.delete(element);
       reveal(element);
     };
-    if (image.decode) image.decode().then(finish, finish);
-    else {
-      image.addEventListener("load", finish, { once: true });
-      image.addEventListener("error", finish, { once: true });
-    }
+    // Some browsers can leave decode() pending for a lazy image. The native
+    // load/error events are the reliable fallback, and eager starts the request
+    // only after the photograph has entered the reveal area.
+    image.addEventListener("load", finish, { once: true });
+    image.addEventListener("error", finish, { once: true });
+    image.loading = "eager";
+    if (image.decode) image.decode().then(finish).catch(() => {
+      if (image.complete) finish();
+    });
   };
   const revealObserver = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
