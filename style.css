@@ -125,7 +125,7 @@ ul { margin: 0; padding: 0; list-style: none; }
 .hotel-heading { grid-column: 1; grid-row: 1; }
 .hotel-body { grid-column: 2; grid-row: 1; padding-top: 4px; }
 .hotel-location { grid-column: 1; grid-row: 2; min-width: 0; }
-.hotel-name-en { color: var(--muted); font-size: 12px; font-weight: 600; line-height: 1.8; letter-spacing: .05em; margin-bottom: 6px; }
+.hotel-name-en { color: var(--muted); font-size: 14px; font-weight: 600; line-height: 1.8; letter-spacing: .05em; margin-bottom: 6px; }
 .hotel-name { font-family: var(--serif); font-weight: 500; font-size: 22px; line-height: 1.7; letter-spacing: .03em; overflow-wrap: anywhere; }
 .hotel-features { display: flex; flex-wrap: wrap; align-items: center; row-gap: 6px; margin-top: 12px; font-size: 13px; line-height: 1.8; letter-spacing: .025em; }
 .hotel-features li { position: relative; white-space: nowrap; }
@@ -293,7 +293,7 @@ dialog.is-closing::backdrop { animation: dialog-backdrop-close .24s ease-in both
   .desktop-nav a { font-size: 12px; }
   .reserve-button { width: 125px; }
   .hotels-layout, .news { grid-template-columns: 170px minmax(0, 1fr); gap: 32px; }
-  .hotel-button { width: 140px; max-width: 140px; font-size: 12px; }
+  .hotel-button { width: 140px; max-width: 140px;}
 }
 @media (max-width: 1100px) { .footer-layout { grid-template-columns: minmax(0, 1fr); gap: 40px; } }
 @media (min-width: 851px) and (max-width: 1100px) {
@@ -349,7 +349,6 @@ dialog.is-closing::backdrop { animation: dialog-backdrop-close .24s ease-in both
   .hero-shade { background: linear-gradient(180deg, #17221966, transparent 30%), linear-gradient(90deg, #17221966, #1722191a), linear-gradient(0deg, #17221980, transparent 50%); }
   .hero h1 { font-size: clamp(25px, 6.5vw, 32px); line-height: 1.8; letter-spacing: .06em; }
   .hero-heading { bottom: 25%; }
-  .hero-eyebrow { font-size: 12px; }
   .hero-subtitle { letter-spacing: .03em; }
   .hero-location { top: 24%; font-size: 7px; }
   .hero-bottom { bottom: 5%; }
@@ -362,27 +361,24 @@ dialog.is-closing::backdrop { animation: dialog-backdrop-close .24s ease-in both
   .slide-buttons { justify-content: flex-end; gap: 3px; margin-top: 10px; }
   .slide-buttons button { font-size: 12px; padding: 12px 9px; min-width: 44px; min-height: 44px; }
   .hotels { padding-block: 48px 40px; }
-  .hotels-heading .eyebrow { font-size: 8px; }
   .section-title { font-size: 30px; }
   .section-title > span { margin-top: 17px; }
   .hotels-heading h2 { font-size: 22px; }
   .hotels-lead { margin-top: 18px; }
-  .hotel-name-en { font-size: 10px; letter-spacing: .08em; margin-bottom: 8px; }
+  .hotel-name-en { letter-spacing: .08em; margin-bottom: 8px; }
   .hotel-name { font-size: 19px; line-height: 1.7; letter-spacing: .025em; }
   .hotel-location { margin-top: 24px; }
   .hotel-links { margin-top: 20px; gap: 10px; }
   .hotel-button { flex: 1 1 0; width: 140px; max-width: 140px; min-width: 0; padding-inline: 12px; gap: 10px; }
   .stay { margin-top: 25px; }
   .stay-layout { padding-block: 36px; }
-  .stay-panel > .eyebrow { font-size: 10px; margin-bottom: 16px; }
+  .stay-panel > .eyebrow { margin-bottom: 16px; }
   .stay-panel h2 { font-size: 24px; }
   .stay-copy h3 { font-size: 18px; }
-  .stay-copy-eyebrow { font-size: 11px; }
-  .stay-link { font-size: 12px; gap: 16px; }
+  .stay-link { font-size: 14px; gap: 16px; }
   .news { padding-block: 28px 24px; gap: 12px; }
-  .news-heading { gap: 10px; }
-  .news-heading .eyebrow { font-size: 10px; }
-  .news-heading h2 { font-size: 17px; }
+  .news-heading { align-items: flex-start; flex-direction: column; gap: 10px; }
+  .news-heading h2 { font-size: 22px; }
   .news-more { font-size: 12px; gap: 10px; }
   .news-item { grid-template-columns: minmax(0, 1fr) 16px; gap: 4px 14px; padding-block: 14px; }
   .news-item time { grid-column: 1; grid-row: 1; }
@@ -390,7 +386,7 @@ dialog.is-closing::backdrop { animation: dialog-backdrop-close .24s ease-in both
   .news-item > .icon { grid-column: 2; grid-row: 1 / 3; }
   .contact { padding-block: 72px; }
   .contact h2 { font-size: 22px; letter-spacing: .03em; }
-  .contact .eyebrow { font-size: 11px; }
+  .contact .eyebrow { font-size: 14px; }
   .footer { padding-block: 48px 24px; }
   .footer-brand { width: 190px; }
   .footer-layout { gap: 32px; }
