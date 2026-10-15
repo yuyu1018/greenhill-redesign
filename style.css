@@ -157,7 +157,7 @@ ul { margin: 0; padding: 0; list-style: none; }
 .hotel-description { color: var(--ink); }
 .hotel-address { font-size: 14px; font-style: normal; line-height: 1.8; color: var(--text-gray); }
 .hotel-address > span { display: block; }
-.hotel-map { display: inline-flex; align-items: center; gap: 6px; min-height: var(--action-height); margin-top: 4px; padding-block: 5px; color: var(--text-gray); font-size: 14px; line-height: 1.8; text-decoration: underline; text-underline-offset: 4px; transition: color .2s; }
+.hotel-map { display: inline-flex; align-items: center; gap: 6px; min-height: var(--action-height); margin-top: 4px; padding-block: 5px; color: var(--text-gray); font-size: 14px; line-height: 1.8; text-decoration: underline; text-underline-offset: 8px; transition: color .2s; }
 .hotel-map:hover { color: var(--accent); }
 .hotel-links { grid-column: 2; grid-row: 2; align-self: start; display: flex; align-items: center; gap: 12px; min-width: 0; }
 .hotel-button { flex: 1 1 0; width: var(--hotel-button-width); max-width: var(--hotel-button-width); min-width: 0; padding-inline: 16px; gap: 12px; background: var(--cream); border-color: var(--sage); color: var(--sage-text); }
@@ -223,7 +223,7 @@ ul { margin: 0; padding: 0; list-style: none; }
 .footer-brand img { width: 100%; }
 .footer-address { margin-top: 24px; color: var(--muted); font-size: 14px; line-height: var(--body-leading); font-style: normal; letter-spacing: .02em; }
 .footer-address p > span { display: block; }
-.footer-map { display: inline-flex; align-items: center; gap: 8px; margin-top: 10px; padding-block: 8px; min-height: var(--action-height); font-family: var(--english); font-size: 14px; text-decoration: underline; text-underline-offset: 4px; }
+.footer-map { display: inline-flex; align-items: center; gap: 8px; margin-top: 10px; padding-block: 8px; min-height: var(--action-height); font-family: var(--english); font-size: 14px; text-decoration: underline; text-underline-offset: 8px; }
 .footer-hotels-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
 .footer-secondary { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px; margin-top: 40px; }
 .footer-column h2 { margin-bottom: 14px; font-size: 14px; font-weight: 500; line-height: 1.8; letter-spacing: .04em; }
