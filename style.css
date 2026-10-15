@@ -12,7 +12,7 @@
   --serif: "Cormorant Garamond", "Shippori Mincho", "Yu Mincho", "Hiragino Mincho ProN", serif;
   --english: "Cormorant Garamond", "Baskerville", "Shippori Mincho", "Times New Roman", serif;
   --body-size: 16px;
-  --body-leading: 2;
+  --body-leading: 1.8;
   --content-width: 80%;
   --content-max: 1200px;
   --content-gutter: max(10%, calc((100% - var(--content-max)) / 2));
