@@ -1,6 +1,9 @@
 "use strict";
 
 const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
+let openingPending = document.documentElement.classList.contains("has-opening");
+let resolveOpening;
+const openingReady = new Promise((resolve) => { resolveOpening = resolve; });
 const motionAnimations = new Map();
 function playMotion(element, keyframes, options) {
   if (motionPreference.matches || !element.animate) return;
@@ -138,7 +141,7 @@ slideButtons.forEach((button) => {
 function canPlayHero() {
   const bounds = heroStage.getBoundingClientRect();
   const choosingWithKeyboard = slideButtons.some((button) => button === document.activeElement && button.matches(":focus-visible"));
-  return heroPhotosReady && !heroUserPaused && !motionPreference.matches &&
+  return heroPhotosReady && !openingPending && !heroUserPaused && !motionPreference.matches &&
     !document.hidden && !document.body.classList.contains("has-dialog") &&
     bounds.bottom > header.offsetHeight && bounds.top < innerHeight &&
     !(heroHover.matches && heroPagination.matches(":hover") && !heroPlayback.matches(":hover")) && !choosingWithKeyboard;
@@ -221,7 +224,9 @@ if ("IntersectionObserver" in window && !motionPreference.matches) {
   const revealObserver = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
       if (!entry.isIntersecting) return;
-      if (entry.target.classList.contains("motion-reveal-photo")) revealPhotoWhenReady(entry.target);
+      if (openingPending && entry.target.matches(".hero-eyebrow, .hero h1")) {
+        openingReady.then(() => reveal(entry.target, motionPreference.matches || window.scrollY > 100));
+      } else if (entry.target.classList.contains("motion-reveal-photo")) revealPhotoWhenReady(entry.target);
       else reveal(entry.target);
     });
   }, { threshold: .08, rootMargin: "0px 0px -6% 0px" });
@@ -276,10 +281,12 @@ if ("IntersectionObserver" in window && !motionPreference.matches) {
     revealTargets.forEach((element) => reveal(element, true));
     revealObserver.disconnect();
   });
-  const heroBounds = hero.getBoundingClientRect();
-  if (heroBounds.top <= innerHeight && heroBounds.bottom > 0 && !hero.classList.contains("is-past-opening")) {
-    playMotion(document.querySelector(".hero-images"), [{ opacity: 0 }, { opacity: 1 }], { duration: 800, easing: "ease-out" });
-  }
+  openingReady.then(() => {
+    const heroBounds = hero.getBoundingClientRect();
+    if (heroBounds.top <= innerHeight && heroBounds.bottom > 0 && !hero.classList.contains("is-past-opening")) {
+      playMotion(document.querySelector(".hero-images"), [{ opacity: 0 }, { opacity: 1 }], { duration: 800, easing: "ease-out" });
+    }
+  });
 }
 
 motionPreference.addEventListener("change", () => {
@@ -359,4 +366,53 @@ menuDialog.querySelectorAll("a[href^='#']").forEach((link) => {
       destination.focus({ preventScroll: true });
     });
   });
+});
+
+// A short brand introduction, with an independent safety timeout in the head.
+// Input, anchor visits, browser history and reduced motion bypass the curtain.
+const openingScreen = document.querySelector(".opening-screen");
+const openingSkipEvents = ["pointerdown", "wheel", "touchstart", "keydown", "focusin"];
+function finishOpening() {
+  openingPending = false;
+  window.clearTimeout(window.greenhillOpeningTimeout);
+  document.documentElement.classList.remove("has-opening", "is-opening-exiting");
+  openingScreen?.remove();
+  openingSkipEvents.forEach((type) => document.removeEventListener(type, finishOpening));
+  window.removeEventListener("opening:timeout", finishOpening);
+  resolveOpening();
+  scheduleViewportUpdate();
+}
+if (!openingPending || motionPreference.matches || document.hidden) {
+  finishOpening();
+} else {
+  openingScreen.addEventListener("animationend", (event) => {
+    if (event.target === openingScreen && event.animationName === "opening-curtain-out") finishOpening();
+  });
+  openingSkipEvents.forEach((type) => document.addEventListener(type, finishOpening, { passive: true }));
+  window.addEventListener("opening:timeout", finishOpening, { once: true });
+  const firstPhotoReady = new Promise((resolve) => {
+    const image = slides[0];
+    if (image.complete) { resolve(); return; }
+    const finish = () => {
+      window.clearTimeout(timeout);
+      image.removeEventListener("load", finish);
+      image.removeEventListener("error", finish);
+      resolve();
+    };
+    const timeout = window.setTimeout(finish, 1200);
+    image.addEventListener("load", finish, { once: true });
+    image.addEventListener("error", finish, { once: true });
+  });
+  Promise.all([firstPhotoReady, new Promise((resolve) => window.setTimeout(resolve, 700))]).then(() => {
+    if (!openingPending) return;
+    document.documentElement.classList.add("is-opening-exiting");
+    // Start the FV reveals under the departing curtain, so there is no gap.
+    resolveOpening();
+  });
+}
+motionPreference.addEventListener("change", () => {
+  if (openingPending && motionPreference.matches) finishOpening();
+});
+window.addEventListener("pageshow", (event) => {
+  if (event.persisted) finishOpening();
 });

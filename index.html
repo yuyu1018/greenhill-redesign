@@ -7,12 +7,27 @@
   <meta name="description" content="和歌山・御坊と日高で、あなたらしい滞在を。グリーンヒルホテルグループのトップページ・リデザイン案。">
   <meta name="theme-color" content="#f6f3eb">
   <title>GREEN HILL HOTEL GROUP | トップページ デザイン案</title>
+  <script>
+    (() => {
+      const navigation = performance.getEntriesByType("navigation")[0];
+      if (matchMedia("(prefers-reduced-motion: reduce)").matches || location.hash || navigation?.type === "back_forward") return;
+      document.documentElement.classList.add("has-opening");
+      // Always uncover the page, even if the main script fails to load.
+      window.greenhillOpeningTimeout = setTimeout(() => {
+        document.documentElement.classList.remove("has-opening", "is-opening-exiting");
+        window.dispatchEvent(new Event("opening:timeout"));
+      }, 3500);
+    })();
+  </script>
   <link rel="icon" href="assets/favicon.png">
   <link rel="stylesheet" href="assets/fonts/fonts.css">
   <link rel="stylesheet" href="style.css">
   <script src="script.js" defer></script>
 </head>
 <body>
+  <div class="opening-screen" aria-hidden="true">
+    <img class="opening-logo" src="assets/logo.png" width="1756" height="394" alt="">
+  </div>
   <svg class="icon-definitions" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><defs>
     <symbol id="icon-arrow-right" viewBox="0 0 24 24"><path d="M4 12h16m-6-6 6 6-6 6"/></symbol>
     <symbol id="icon-arrow-up-right" viewBox="0 0 24 24"><path d="M6 18 18 6M6 6h12v12"/></symbol>

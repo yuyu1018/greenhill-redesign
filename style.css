@@ -24,6 +24,7 @@
   --photo-reveal-duration: .85s;
   --reveal-distance: 10px;
   --motion-ease: cubic-bezier(.22, .61, .36, 1);
+  --opening-duration: .8s;
 }
 *, *::before, *::after { box-sizing: border-box; }
 html { scroll-behavior: smooth; scroll-padding-top: 110px; }
@@ -69,6 +70,19 @@ ul { margin: 0; padding: 0; list-style: none; }
 .reserve-button, .contact-reserve { background: var(--accent); color: white; }
 .reserve-button:hover, .contact-reserve:hover { background: var(--accent-hover); }
 .reserve-button > span { display: block; }
+
+/* The opening is opt-in: without JavaScript the page is visible immediately. */
+.opening-screen { display: none; }
+.has-opening .opening-screen { position: fixed; inset: 0; z-index: 90; display: grid; place-items: center; background: var(--cream); }
+.opening-logo { width: clamp(190px, 22vw, 300px); height: auto; animation: opening-logo-in .65s var(--motion-ease) both; }
+.is-opening-exiting .opening-screen { animation: opening-curtain-out var(--opening-duration) cubic-bezier(.76, 0, .24, 1) both; }
+.is-opening-exiting .opening-logo { animation: opening-logo-out .35s ease both; }
+@keyframes opening-logo-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes opening-logo-out { to { opacity: 0; transform: translateY(-8px); } }
+@keyframes opening-curtain-out { to { transform: translateY(-100%); } }
 
 /* The header sits on top of the photograph, then becomes cream on scroll. */
 .header { --scrolled-height: 86px; position: fixed; inset: 0 0 auto; height: 80px; display: flex; align-items: center; gap: 32px; padding-inline: var(--content-gutter); color: white; z-index: 30; border-bottom: 1px solid #ffffff30; transition: background .3s, color .3s, height .3s, border-color .3s; }
@@ -435,6 +449,7 @@ dialog.is-closing::backdrop { animation: dialog-backdrop-close .24s ease-in both
   .back-top:hover .icon { transform: translateY(-3px); }
 }
 @media (prefers-reduced-motion: reduce) {
+  .has-opening .opening-screen { display: none; }
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation: none !important; transition: none !important; }
   .motion-reveal { opacity: 1 !important; transform: none !important; clip-path: none !important; }
